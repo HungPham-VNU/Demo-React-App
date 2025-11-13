@@ -1,19 +1,12 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Header from "./components/Header";
-import Home from "./pages/Home";
-import About from "./pages/About";
+
 import { ThemeProvider } from "./context/theme/theme-provider";
+import { router } from "./routes/router";
+import { RouterProvider } from "react-router-dom";
 
 export default function App() {
   return (
     <ThemeProvider>
-      <BrowserRouter>
-        <Header />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/about" element={<About />} />
-        </Routes>
-      </BrowserRouter>
+      <RouterProvider router={router} />
     </ThemeProvider>
   );
 }

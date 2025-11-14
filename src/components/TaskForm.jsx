@@ -17,7 +17,7 @@ export default function TaskForm({ onAdd }) {
                 placeholder="Thêm công việc mới..."
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                className="flex-1 border rounded p-2"
+                className="flex-1 border rounded p-2 dark:bg-gray-800 dark:text-white"
             />
             <button className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
                 Thêm

@@ -3,12 +3,14 @@ import { useState, useEffect } from "react";
 import { ThemeContext } from "./theme-context";
 
 export const ThemeProvider = ({ children }) => {
-    const [dark, setDark] = useState(
-        () => localStorage.getItem("theme") === "dark"
-    );
+    const [dark, setDark] = useState(() => localStorage.getItem("theme") === "dark");
 
     useEffect(() => {
-        document.documentElement.classList.toggle("dark", dark);
+        if (dark) {
+            document.documentElement.classList.add("dark");
+        } else {
+            document.documentElement.classList.remove("dark");
+        }
         localStorage.setItem("theme", dark ? "dark" : "light");
     }, [dark]);
 

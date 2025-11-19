@@ -5,6 +5,8 @@ export interface Todo {
     id: string;
     text: string;
     completed: boolean;
+    dueDate?: string; // ISO 8601 format
+    createdAt: string; // ISO 8601 format
 }
 
 export function useTodos() {
@@ -15,8 +17,14 @@ export function useTodos() {
         localStorage.setItem("todos", JSON.stringify(todos));
     }, [todos]);
 
-    const addTodo = (text: string) =>
-        setTodos([...todos, { id: crypto.randomUUID(), text, completed: false }]);
+    const addTodo = (text: string, dueDate?: string) =>
+        setTodos([...todos, { 
+            id: crypto.randomUUID(), 
+            text, 
+            completed: false, 
+            dueDate,
+            createdAt: new Date().toISOString()
+        }]);
 
     const toggleTodo = (id: string) =>
         setTodos(
@@ -28,5 +36,24 @@ export function useTodos() {
     const deleteTodo = (id: string) =>
         setTodos(todos.filter((t) => t.id !== id));
 
-    return { todos, addTodo, toggleTodo, deleteTodo };
+    const editTodo = (id: string, newText: string, dueDate?: string) =>
+        setTodos(
+            todos.map((t) =>
+                t.id === id ? { ...t, text: newText, dueDate } : t
+            )
+        );
+
+    const reorderTodos = (activeId: string, overId: string) => {
+        const oldIndex = todos.findIndex((t) => t.id === activeId);
+        const newIndex = todos.findIndex((t) => t.id === overId);
+        
+        if (oldIndex === -1 || newIndex === -1) return;
+        
+        const newTodos = [...todos];
+        const [movedItem] = newTodos.splice(oldIndex, 1);
+        newTodos.splice(newIndex, 0, movedItem);
+        setTodos(newTodos);
+    };
+
+    return { todos, addTodo, toggleTodo, deleteTodo, editTodo, reorderTodos };
 }
